@@ -1,28 +1,33 @@
 require 'task_tracker'
 
-# As a user
-# So that I can keep track of my tasks
-# I want to check if a text includes the string #TODO.
+RSpec.describe "task_tracker" do
+    it "returns true if str includes #TODO" do
+    result = task_tracker("#TODO: something")
 
-RSpec.describe "task_tracker method" do
-    it "return true if str includes TODO" do
-        result = task_tracker("TODO: a task")
-        expect(result).to eq true
+    expect(result).to eq true
     end
 
-    it "return true if str includes TODO" do
-        result = task_tracker("I need TODO a task")
-        expect(result).to eq true
+    it "returns true if str includes #TODO" do
+    result = task_tracker("I need #TODO something")
+
+    expect(result).to eq true
     end
 
-    it "return false if str does not include TODO" do
-        result = task_tracker("a task")
-        expect(result).to eq false
+    it "returns false if strdoes not include #TODO" do
+    result = task_tracker("I need #todo something")
+
+    expect(result).to eq false
     end
 
-    it "return false if str does not include TODO" do
-        result = task_tracker("todo a task")
-        expect(result).to eq false
+    it "returns false if strdoes not include #TODO" do
+    result = task_tracker("this is a task")
+
+    expect(result).to eq false
     end
 
+    it "returns false if strdoes not include #TODO" do
+    result = task_tracker("TODO: something")
+
+    expect(result).to eq false
+    end
 end

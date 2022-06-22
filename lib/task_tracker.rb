@@ -1,7 +1,7 @@
 def task_tracker(str)
-    if str.include?("TODO")
+    if str.include?("#TODO")
         return true
-    else
-        return false
     end
+
+    return false
 end
