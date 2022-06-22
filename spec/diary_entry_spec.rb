@@ -50,6 +50,13 @@ RSpec.describe DiaryEntry do
             expect(result).to eq "...three four..."
         end
 
+        it "Return the next chunk of text when the method is called again with a wpm * minutes higher than word count" do
+            entry = DiaryEntry.new("Today", "One two three four five six")
+            entry.reading_chunk(1, 2)
+            result = entry.reading_chunk(7, 1)
+            expect(result).to eq "One two three four five six"
+        end
+
         it "Return the final chunk of text when the method is called again" do
             entry = DiaryEntry.new("Today", "One two three four five")
             entry.reading_chunk(1, 2)

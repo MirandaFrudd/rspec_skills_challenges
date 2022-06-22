@@ -17,7 +17,7 @@ class DiaryEntry
   
     def count_words
       # Returns the number of words in the contents as an integer
-      @contents.split.count
+      return @contents.split.count
     end
   
     def reading_time(wpm) # wpm is an integer representing the number of words the
@@ -40,12 +40,15 @@ class DiaryEntry
       fail "Invalid reading rate and/or number of minutes" if wpm < 1 || minutes < 1
       
       amount_read = wpm * minutes
+      if amount_read >= count_words
+        @reading_position = 0
+        return contents 
+      end
+
       chunk = @contents.split[@reading_position...@reading_position + amount_read].join(" ")
       @reading_position += amount_read
-      puts "Amount read: #{amount_read}, Reading position: #{@reading_position}"
-      if amount_read >= count_words
-        contents
-      elsif  @reading_position - amount_read == 0
+ 
+      if  @reading_position - amount_read == 0
         return "#{chunk}..."
       elsif @reading_position >= count_words
         @reading_position = 0
@@ -56,5 +59,3 @@ class DiaryEntry
     end
     
   end
-
-  #This is a note for Ollie
