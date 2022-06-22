@@ -17,7 +17,7 @@ class DiaryEntry
   
     def count_words
       # Returns the number of words in the contents as an integer
-      @num_words = @contents.split.count
+      @contents.split.count
     end
   
     def reading_time(wpm) # wpm is an integer representing the number of words the
@@ -25,8 +25,7 @@ class DiaryEntry
       # Returns an integer representing an estimate of the reading time in minutes
       # for the contents at the given wpm.
         fail "Invalid reading rate" if wpm < 1
-        count_words
-        return (@num_words / wpm.to_f).ceil
+        return (count_words / wpm.to_f).ceil
     end
   
     def reading_chunk(wpm, minutes) # `wpm` is an integer representing the number
@@ -40,13 +39,18 @@ class DiaryEntry
       # The next call after that it should restart from the beginning.
       fail "Invalid reading rate and/or number of minutes" if wpm < 1 || minutes < 1
       
-      
       amount_read = wpm * minutes
       chunk = @contents.split[@reading_position...@reading_position + amount_read].join(" ")
       @reading_position += amount_read
-      if @reading_position - amount_read == 0
+      puts "Amount read: #{amount_read}, Reading position: #{@reading_position}"
+      if amount_read >= count_words
+        contents
+      elsif  @reading_position - amount_read == 0
         return "#{chunk}..."
-      else 
+      elsif @reading_position >= count_words
+        @reading_position = 0
+        return "...#{chunk}"
+      else
         return "...#{chunk}..."
       end
     end

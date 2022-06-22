@@ -50,6 +50,29 @@ RSpec.describe DiaryEntry do
             expect(result).to eq "...three four..."
         end
 
+        it "Return the final chunk of text when the method is called again" do
+            entry = DiaryEntry.new("Today", "One two three four five")
+            entry.reading_chunk(1, 2)
+            entry.reading_chunk(1, 2)
+            result = entry.reading_chunk(1, 2)
+            expect(result).to eq "...five"
+        end
+
+        it "Return entire contents if readable in time given" do
+            entry = DiaryEntry.new("Today", "One two three four five")
+            result = entry.reading_chunk(1, 6)
+            expect(result).to eq "One two three four five"
+        end
+
+        it "Returns first chunk again once entire contents has been read" do
+            entry = DiaryEntry.new("Today", "One two three four five")
+            entry.reading_chunk(1, 2)
+            entry.reading_chunk(1, 2)
+            entry.reading_chunk(1, 2)
+            result = entry.reading_chunk(1, 2)
+            expect(result).to eq "One two..."
+        end
+
         it "Return an error if wpm is invalid (0)" do
             entry = DiaryEntry.new("Today", "One two three four five")
             expect{ entry.reading_chunk(0, 0) }.to raise_error "Invalid reading rate and/or number of minutes"
