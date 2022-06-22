@@ -31,14 +31,30 @@ RSpec.describe GrammarStats do
             expect(result).to eq false
         end
     end
+    context "checking the percentage_good method" do
+        it "returns the percentage of true results when a mix of valid and invalid strings have been checked" do
+            grammar = GrammarStats.new
+            grammar.check("Hello Miranda.")
+            grammar.check("Hello Miranda.")
+            grammar.check("hello Miranda.")
+            grammar.check("hello Miranda.")
+            result = grammar.percentage_good
+            expect(result).to eq 50
+        end
 
-    it "returns the percentage of true results when a mix of valid and invalid strings have been checked" do
-        grammar = GrammarStats.new
-        grammar.check("Hello Miranda.")
-        grammar.check("Hello Miranda.")
-        grammar.check("hello Miranda.")
-        grammar.check("hello Miranda.")
-        result = grammar.percentage_good
-        expect(result).to eq 50
+        it "returns the percentage of true results when a mix of valid and invalid strings have been checked" do
+            grammar = GrammarStats.new
+            grammar.check("Hello Miranda.")
+            grammar.check("Hello Miranda.")
+            grammar.check("Hello Miranda.")
+            grammar.check("Hello Miranda.")
+            grammar.check("hello Miranda.")
+            grammar.check("hello Miranda.")
+            grammar.check("hello Miranda.")
+            grammar.check("hello Miranda.")
+            grammar.check("hello Miranda.")
+            result = grammar.percentage_good
+            expect(result).to eq 44
+        end
     end
 end
