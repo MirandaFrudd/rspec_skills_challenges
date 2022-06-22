@@ -25,11 +25,38 @@ RSpec.describe DiaryEntry do
             expect(result).to eq 1
         end
 
-        it "Return the ammount that someone could read in the time given" do
-            entry = DiaryEntry.new("Today", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin malesuada orci sodales eros ullamcorper pellentesque. Nullam non eleifend turpis. Nunc a magna quis urna posuere fringilla id nec massa. Integer vitae eros justo. Nunc quis ipsum sit amet ligula fringilla cursus. Suspendisse elementum at dolor a commodo. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis at arcu odio. Etiam interdum justo sed arcu eleifend euismod. Donec elit mauris, dictum ac vehicula id, feugiat in metus. Fusce mattis leo sed sapien mollis, in rhoncus risus feugiat. Fusce iaculis lacus enim, eu condimentum purus maximus ut. Cras sit amet diam id.")
-            result = entry.reading_chunk(10, 4)
-            expect(result).to eq "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin malesuada orci sodales eros ullamcorper pellentesque. Nullam non eleifend turpis. Nunc a magna quis urna posuere fringilla id nec massa. Integer vitae eros justo. Nunc quis ipsum sit amet ligula fringilla..."
+        it "Return an integer representing the reading time of the contents" do
+            entry = DiaryEntry.new("Today", "One Two " * 50)
+            result = entry.reading_time(6)
+            expect(result).to eq 17
         end
+
+        it "Return an error if wpm is invalid (0)" do
+            entry = DiaryEntry.new("Today", "One two three four five")
+            expect{ entry.reading_time(0) }.to raise_error "Invalid reading rate"
+            
+        end
+
+        it "Return the ammount that someone could read in the time given" do
+            entry = DiaryEntry.new("Today", "One two three four five")
+            result = entry.reading_chunk(1, 4)
+            expect(result).to eq "One two three four..."
+        end
+
+        it "Return the next chunk of text when the method is called twice" do
+            entry = DiaryEntry.new("Today", "One two three four five")
+            entry.reading_chunk(1, 2)
+            result = entry.reading_chunk(1, 2)
+            expect(result).to eq "...three four..."
+        end
+
+        it "Return an error if wpm is invalid (0)" do
+            entry = DiaryEntry.new("Today", "One two three four five")
+            expect{ entry.reading_chunk(0, 0) }.to raise_error "Invalid reading rate and/or number of minutes"
+            expect{ entry.reading_chunk(0, 1) }.to raise_error "Invalid reading rate and/or number of minutes"
+            expect{ entry.reading_chunk(1, 0) }.to raise_error "Invalid reading rate and/or number of minutes"
+        end
+       
     end
 
     
