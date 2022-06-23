@@ -19,7 +19,6 @@ RSpec.describe MusicTracker do
 
         it 'fails if we return #view_tracks when no tracks have been added' do
             track = MusicTracker.new
-            result = track.view_tracks
             expect{ track.view_tracks }.to raise_error "there are no tracks in your library"
         end
     end
