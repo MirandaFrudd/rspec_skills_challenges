@@ -30,7 +30,7 @@ RSpec.describe "diary integration" do
             expect(diary.reading_time(4)).to eq 2
         end
 
-        it "return the longest full entry that can be read in the given time" do
+        it "return the longest full entry that can be read in the given time when the time is longer than num of words" do
             diary = Diary.new
             entry_one = DiaryEntry.new('title1', 'one two')
             entry_two = DiaryEntry.new('title2', 'one two three four')
@@ -38,7 +38,18 @@ RSpec.describe "diary integration" do
             diary.add(entry_one)
             diary.add(entry_two)
             diary.add(entry_three)
-            expect(diary.find_best_entry_for_reading_time(3,2)).to eq entry_three
+            expect(diary.find_best_entry_for_reading_time(3,2)).to eq "You can read title3"
+        end
+
+        it "return the longest full entry that can be read in the given time when some entrys are too long to be read in the time given" do
+            diary = Diary.new
+            entry_one = DiaryEntry.new('title1', 'one two')
+            entry_two = DiaryEntry.new('title2', 'one two three four')
+            entry_three = DiaryEntry.new('title3', 'one two three four five six')
+            diary.add(entry_one)
+            diary.add(entry_two)
+            diary.add(entry_three)
+            expect(diary.find_best_entry_for_reading_time(5,1)).to eq "You can read title2"
         end
     end
 end

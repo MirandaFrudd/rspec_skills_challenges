@@ -35,6 +35,13 @@ class Diary
       # to, but not over, the length that the user could read in the minutes they
       # have available given their reading speed.
       max_words = wpm * minutes
-      @all_entries.sort_by { |entry| entry.count_words - max_words }[-1]
+      can_be_read = []
+      @all_entries.each do |entry| 
+        if entry.count_words <= max_words
+          can_be_read << entry
+        end
+      end
+      entry_title = can_be_read.sort_by { |entry| entry.count_words }[-1].title
+      return "You can read #{entry_title}"
     end
   end
